@@ -1,0 +1,26 @@
+<br>
+<div class="d-flex justify-content-center">
+    <h1 *ngIf="opening.id != 0">{{ opening.name }}</h1>
+</div>
+<br>
+<table>
+    <tr *ngFor="let line of lines; let n = index">
+        <td *ngFor="let column of columns; let l = index">
+            <div class="content" [ngClass]="{
+                'black': (n+l)%2 === 1, 
+                'white': (n+l)%2 === 0
+            }" (click)="onClick(column, line)">
+            <img *ngIf="getSource(column, line) !== ''" [src]="getSource(column, line)" alt="figure" height="70px" width="70px" >
+            </div>
+        </td>
+    </tr>
+</table>
+<br>
+<div class="row">
+    <div class="col d-flex justify-content-center">
+        <button class="btn btn-primary" (click)="previous()">Previous</button>        
+    </div>
+    <div class="col d-flex justify-content-center">
+        <button class="btn btn-primary" (click)="next()">Next</button>
+    </div>
+</div>

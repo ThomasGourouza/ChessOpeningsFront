@@ -1,0 +1,20 @@
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.content {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+}
+.black {
+    background-image: url("../../../assets/squares/blackSquare.png");
+}
+.white {
+    background-image: url("../../../assets/squares/whiteSquare.png");
+}
+.white_pawn {
+    background-image: url("../../../assets/figures/WhitePawn.png");
+}
