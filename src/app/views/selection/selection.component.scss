@@ -1,0 +1,11 @@
+.openeningName {
+    cursor: pointer;
+}
+.openeningName:hover {
+    color: green;
+    font-weight: bold;
+}
+.selectedOpening {
+    color: blue;
+    font-weight: bold;
+}

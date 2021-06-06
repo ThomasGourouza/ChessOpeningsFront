@@ -1,0 +1,14 @@
+.move {
+    cursor: pointer;
+}
+.move:hover {
+    color: green;
+    font-weight: bold;
+}
+.currentPosition {
+    color: blue;
+    font-weight: bold;
+}
+.currentMoveNumber {
+    font-weight: bold;
+}

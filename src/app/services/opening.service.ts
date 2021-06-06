@@ -12,6 +12,7 @@ export class OpeningService {
 
   private _opening$ = new Subject<Opening>();
   private _openingList$ = new Subject<Array<Opening>>();
+  private _mappedOpeningList$ = new Subject<Array<Opening>>();
 
   constructor(
     private openingApi: OpeningApi
@@ -23,6 +24,10 @@ export class OpeningService {
 
   public get openingList$() {
     return this._openingList$.asObservable();
+  }
+
+  public get mappedOpeningList$() {
+    return this._mappedOpeningList$.asObservable();
   }
 
   public clearOpening() {
@@ -54,6 +59,14 @@ export class OpeningService {
       .catch((error: HttpErrorResponse) => {
         console.log(error);
       });
+  }
+
+  public setOpening(opening: Opening): void {
+    this._opening$.next(opening);
+  }
+
+  public setMappedOpenings(openings: Array<Opening>): void {
+    this._mappedOpeningList$.next(openings);
   }
 
   public addOpening(newOpening: Opening) {

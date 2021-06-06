@@ -1,0 +1,14 @@
+<br>
+<ul *ngIf="!!openings">
+    <li>
+        <span class="row openeningName" (click)="select(undefined)" [ngClass]="{'selectedOpening': selectedOpeninId === 0}">
+            &nbsp;none
+        </span>
+    </li>
+    <li *ngFor="let opening of openings">
+        <span class="row openeningName" (click)="select(opening)"
+            [ngClass]="{'selectedOpening': opening.id === selectedOpeninId}">
+            &nbsp;{{ opening.name }}
+        </span>
+    </li>
+</ul>
