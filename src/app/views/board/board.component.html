@@ -1,12 +1,26 @@
 <br>
 <table>
     <tr *ngFor="let line of lines; let n = index">
-        <td *ngFor="let column of columns; let l = index">
+        <td>
+            <div class="d-flex justify-content-center">
+                {{ line }}&nbsp;
+            </div>
+        </td>
+        <td class="customBorder" *ngFor="let column of columns; let l = index">
             <div class="content" [ngClass]="{
                 'black': (n+l)%2 === 1, 
                 'white': (n+l)%2 === 0
             }" (click)="onClick(column, line)">
-            <img *ngIf="getSource(column, line) !== ''" [src]="getSource(column, line)" alt="figure" height="70px" width="70px" >
+                <img *ngIf="getSource(column, line) !== ''" [src]="getSource(column, line)" alt="figure" height="70px"
+                    width="70px">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td *ngFor="let column of columns; let l = index">
+            <div class="d-flex justify-content-center">
+                {{ column }}
             </div>
         </td>
     </tr>

@@ -1,6 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Opening } from 'src/app/models/opening.model';
 import { OpeningService } from 'src/app/services/opening.service';
+import { PositionsService } from 'src/app/services/positions.service';
+export interface OpeningFamily {
+  opening: Opening;
+  childOpenings: Array<OpeningFamily>;
+}
 
 @Component({
   selector: 'app-selection',
@@ -10,28 +15,52 @@ import { OpeningService } from 'src/app/services/opening.service';
 export class SelectionComponent implements OnInit {
 
   public openings!: Array<Opening>;
-  public selectedOpeninId: number;
+  public selectedOpeningId!: number;
+  public openingFamilies: Array<OpeningFamily>;
 
   constructor(
     private openingService: OpeningService
   ) {
-    this.selectedOpeninId = 0;
+    this.openingFamilies = [];
   }
 
   public ngOnInit(): void {
+
+    this.openingService.opening$.subscribe((opening) =>
+      this.selectedOpeningId = opening.id
+    );
+
     this.openingService.mappedOpeningList$.subscribe((openingList) => {
       this.openings = openingList;
+
+      this.openingFamilies = openingList
+        .filter((opening) => !opening.parentOpeningId)
+        .map((opening) => {
+          return {
+            opening: opening,
+            childOpenings: this.setChildOpenings(opening.id)
+          }
+        });
+      console.log(this.openingFamilies);
     });
   }
 
-  public select(opening: Opening | undefined): void {
-    if (opening != undefined) {
-      this.selectedOpeninId = opening.id;
-      this.openingService.setOpening(opening);
+  private setChildOpenings(id: number): Array<OpeningFamily> {
+    const childOpenings = this.openings.filter((opening) => opening.parentOpeningId === id);
+    if (childOpenings.length > 0) {
+      return childOpenings.map((childOpening) => {
+        return {
+          opening: childOpening,
+          childOpenings: this.setChildOpenings(childOpening.id)
+        }
+      });
     } else {
-      this.selectedOpeninId = 0;
-      this.openingService.clearOpening();
+      return [];
     }
+  }
+
+  public select(): void {
+    this.openingService.clearOpening();
   }
 
 }

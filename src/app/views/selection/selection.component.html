@@ -1,14 +1,19 @@
 <br>
+<br>
+<div class="row">
+    <div class="col">
+        <button class="btn btn-light" (click)="select()">
+            Openings
+        </button>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-light">Add</button>
+    </div>
+</div>
+<br>
 <ul *ngIf="!!openings">
-    <li>
-        <span class="row openeningName" (click)="select(undefined)" [ngClass]="{'selectedOpening': selectedOpeninId === 0}">
-            &nbsp;none
-        </span>
-    </li>
-    <li *ngFor="let opening of openings">
-        <span class="row openeningName" (click)="select(opening)"
-            [ngClass]="{'selectedOpening': opening.id === selectedOpeninId}">
-            &nbsp;{{ opening.name }}
-        </span>
+    <li *ngFor="let openingFamily of openingFamilies">
+        <app-list [openingFamily]="openingFamily">
+        </app-list>
     </li>
 </ul>

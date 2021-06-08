@@ -4,8 +4,7 @@ import { OpeningService } from 'src/app/services/opening.service';
 
 @Component({
   selector: 'app-center',
-  templateUrl: './center.component.html',
-  styleUrls: ['./center.component.scss']
+  templateUrl: './center.component.html'
 })
 export class CenterComponent implements OnInit {
 
@@ -17,6 +16,7 @@ export class CenterComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
+
     this.openingService.opening$.subscribe((opening) => {
       this.opening = opening;
     });
@@ -41,7 +41,7 @@ export class CenterComponent implements OnInit {
     };
     let parentOpeningId: number | undefined = opening.parentOpeningId;
     while (!!parentOpeningId) {
-      const parentOpening = openings.find((o) => o.id === opening.parentOpeningId);
+      const parentOpening = openings.find((o) => o.id === parentOpeningId);
       parentOpeningId = parentOpening?.parentOpeningId;
       const parentMoves = (!!parentOpening && !!parentOpening.moves) ? parentOpening.moves : [];
       mappedOpening.moves = parentMoves.concat(mappedOpening.moves);

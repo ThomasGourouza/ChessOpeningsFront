@@ -1,0 +1,10 @@
+<span class="row openeningName" (click)="select(openingFamily.opening)"
+    [ngClass]="{'selectedOpening': selectedOpeningId === openingFamily.opening.id}">
+    &nbsp;{{ openingFamily.opening.name }}
+</span>
+<ul *ngIf="openingFamily.childOpenings != []">
+    <li *ngFor="let openingFamily2 of openingFamily.childOpenings">
+        <app-list [openingFamily]="openingFamily2">
+        </app-list>
+    </li>
+</ul>

@@ -2,13 +2,14 @@
     cursor: pointer;
 }
 .move:hover {
-    color: green;
+    color: rgb(207, 255, 160);
     font-weight: bold;
 }
 .currentPosition {
-    color: blue;
+    color: chartreuse;
     font-weight: bold;
 }
 .currentMoveNumber {
     font-weight: bold;
+    color: chartreuse;
 }

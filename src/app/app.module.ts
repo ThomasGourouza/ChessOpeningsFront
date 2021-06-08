@@ -11,6 +11,7 @@ import { OpeningService } from './services/opening.service';
 import { SquareService } from './services/square.service';
 import { PositionsService } from './services/positions.service';
 import { SelectionComponent } from './views/selection/selection.component';
+import { ListComponent } from './views/list/list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SelectionComponent } from './views/selection/selection.component';
     BoardComponent,
     CenterComponent,
     NavigationComponent,
-    SelectionComponent
+    SelectionComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,

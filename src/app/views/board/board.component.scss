@@ -1,8 +1,7 @@
-table,
-th,
-td {
+td.customBorder {
     border: 1px solid black;
     border-collapse: collapse;
+    background-color: white;
 }
 .content {
     width: 70px;
