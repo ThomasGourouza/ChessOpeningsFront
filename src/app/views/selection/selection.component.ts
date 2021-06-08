@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Opening } from 'src/app/models/opening.model';
 import { OpeningService } from 'src/app/services/opening.service';
 import { PositionsService } from 'src/app/services/positions.service';
+import { SquareService } from 'src/app/services/square.service';
 export interface OpeningFamily {
   opening: Opening;
   childOpenings: Array<OpeningFamily>;
@@ -14,44 +16,60 @@ export interface OpeningFamily {
 })
 export class SelectionComponent implements OnInit {
 
-  public openings!: Array<Opening>;
   public selectedOpeningId!: number;
+  public openings!: Array<Opening>;
   public openingFamilies: Array<OpeningFamily>;
+  public isAddMode: boolean;
+
+  public newOpeningForm!: FormGroup;
 
   constructor(
-    private openingService: OpeningService
+    private openingService: OpeningService,
+    private positionsService: PositionsService,
+    private squareService: SquareService,
+    private formBuilder: FormBuilder
   ) {
     this.openingFamilies = [];
+    this.isAddMode = false;
   }
 
   public ngOnInit(): void {
-
+    this.initForm();
+    this.squareService.isAddMode.subscribe((isAddMode) => {
+      this.isAddMode = isAddMode;
+    });
     this.openingService.opening$.subscribe((opening) =>
       this.selectedOpeningId = opening.id
     );
-
     this.openingService.mappedOpeningList$.subscribe((openingList) => {
       this.openings = openingList;
-
       this.openingFamilies = openingList
         .filter((opening) => !opening.parentOpeningId)
         .map((opening) => {
           return {
             opening: opening,
-            childOpenings: this.setChildOpenings(opening.id)
+            childOpenings: this.setChildOpenings(opening.id, openingList)
           }
         });
       console.log(this.openingFamilies);
     });
   }
 
-  private setChildOpenings(id: number): Array<OpeningFamily> {
-    const childOpenings = this.openings.filter((opening) => opening.parentOpeningId === id);
+  private initForm(): void {
+    this.newOpeningForm = this.formBuilder.group(
+      {
+        parentOpeningId: [null, Validators.required]
+      }
+    );
+  }
+
+  private setChildOpenings(id: number, openings: Array<Opening>): Array<OpeningFamily> {
+    const childOpenings = openings.filter((opening) => opening.parentOpeningId === id);
     if (childOpenings.length > 0) {
       return childOpenings.map((childOpening) => {
         return {
           opening: childOpening,
-          childOpenings: this.setChildOpenings(childOpening.id)
+          childOpenings: this.setChildOpenings(childOpening.id, openings)
         }
       });
     } else {
@@ -61,6 +79,28 @@ export class SelectionComponent implements OnInit {
 
   public select(): void {
     this.openingService.clearOpening();
+    this.squareService.setIsAddMode(false);
+  }
+
+  public add(): void {
+    this.openingService.clearOpening();
+    this.squareService.setIsAddMode(true);
+  }
+
+  public onSubmit(): void {
+    const parentId = +this.newOpeningForm.value['parentOpeningId'];
+    if (parentId === 0) {
+      this.openingService.clearOpening();
+    } else {
+      const opening = this.openings.find((o) => o.id === parentId);
+      if (!!opening) {
+        this.openingService.setOpening(opening);
+
+        const positions = this.positionsService.positions;
+        this.positionsService.src = positions[positions.length - 1].src;
+        // indiquer à navigation le bon moveNumber et color
+      }
+    }
   }
 
 }

@@ -7,13 +7,37 @@
         </button>
     </div>
     <div class="col">
-        <button type="button" class="btn btn-light">Add</button>
+        <button type="button" class="btn btn-light" (click)="add()">Add</button>
     </div>
 </div>
 <br>
-<ul *ngIf="!!openings">
+<br>
+<ul *ngIf="!!openingFamilies && !isAddMode">
     <li *ngFor="let openingFamily of openingFamilies">
         <app-list [openingFamily]="openingFamily">
         </app-list>
     </li>
 </ul>
+<div *ngIf="isAddMode">
+    <form [formGroup]="newOpeningForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-2">
+                From
+            </div>
+            <div class="form-group col">
+                <select class="form-control" formControlName="parentOpeningId">
+                    <option value="0">New</option>
+                    <option *ngFor="let opening of openings" [value]="opening.id">
+                        {{ opening.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-outline-light" type="submit" [disabled]="newOpeningForm.invalid">
+                    OK
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>

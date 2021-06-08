@@ -10,11 +10,12 @@ export interface Square {
 })
 export class SquareService {
 
+
   private _columns: Array<string>;
   private _lines: Array<string>;
-  private _selectedSquare$ = new Subject<Square>();
 
-  private _randomSquare$ = new Subject<Square>();
+  private _isAddMode$ = new Subject<boolean>();
+  private _selectedSquare$ = new Subject<Square>();
 
   constructor() {
     this._columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -29,6 +30,14 @@ export class SquareService {
     return this._lines;
   }
 
+  get isAddMode(): Observable<boolean> {
+    return this._isAddMode$.asObservable();
+  }
+
+  public setIsAddMode(isAddMode: boolean): void {
+    this._isAddMode$.next(isAddMode);
+  }
+
   get selectedSquare(): Observable<Square> {
     return this._selectedSquare$.asObservable();
   }
@@ -37,11 +46,4 @@ export class SquareService {
     this._selectedSquare$.next(newSquare);
   }
 
-  get randomSquare(): Observable<Square> {
-    return this._randomSquare$.asObservable();
-  }
-
-  public setRandomSquare(newSquare: Square): void {
-    this._randomSquare$.next(newSquare);
-  }
 }
