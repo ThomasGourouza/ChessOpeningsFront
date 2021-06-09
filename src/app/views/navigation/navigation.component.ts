@@ -3,6 +3,7 @@ import { Move } from 'src/app/models/move.model';
 import { Opening } from 'src/app/models/opening.model';
 import { OpeningService } from 'src/app/services/opening.service';
 import { PositionsService } from 'src/app/services/positions.service';
+import { SquareService } from 'src/app/services/square.service';
 export interface MOVE {
   moveNumber: number;
   white: string;
@@ -27,7 +28,8 @@ export class NavigationComponent implements OnInit {
 
   constructor(
     private positionsService: PositionsService,
-    private openingService: OpeningService
+    private openingService: OpeningService,
+    private squareService: SquareService
   ) {
     this.currentOpeningId = 0;
     this.init();
@@ -42,7 +44,7 @@ export class NavigationComponent implements OnInit {
         this.positionsService.positions.forEach((position) => {
           if (position.moveNumber !== 0) {
             const foundMove = this.histo.find((move) => move.moveNumber === position.moveNumber);
-            if (!!foundMove && foundMove.black === '/') {
+            if (!!foundMove && foundMove.black === '') {
               const openingMove = opening.moves.find((move) => move.moveNumber === position.moveNumber && move.color === 'B');
               foundMove.black = this.buildHistoMove(openingMove);
               foundMove.blackPosition = position.src;
@@ -51,13 +53,20 @@ export class NavigationComponent implements OnInit {
               this.histo.push({
                 moveNumber: position.moveNumber,
                 white: this.buildHistoMove(openingMove),
-                black: '/',
+                black: '',
                 whitePosition: position.src,
                 blackPosition: null
               });
             }
           }
         });
+      }
+    });
+    this.squareService.isAddModeBuilding.subscribe((isAddModeBuilding) => {
+      if (isAddModeBuilding && this.histo.length > 0) {
+        console.log(this.histo);
+        this.moveNumber = this.histo[this.histo.length - 1].moveNumber;
+        this.color = (this.histo[this.histo.length - 1].black === '') ? 'W' : 'B';
       }
     });
   }

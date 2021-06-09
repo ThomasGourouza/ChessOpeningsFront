@@ -15,6 +15,7 @@ export class SquareService {
   private _lines: Array<string>;
 
   private _isAddMode$ = new Subject<boolean>();
+  private _isAddModeBuilding$ = new Subject<boolean>();
   private _selectedSquare$ = new Subject<Square>();
 
   constructor() {
@@ -34,8 +35,16 @@ export class SquareService {
     return this._isAddMode$.asObservable();
   }
 
+  get isAddModeBuilding(): Observable<boolean> {
+    return this._isAddModeBuilding$.asObservable();
+  }
+
   public setIsAddMode(isAddMode: boolean): void {
     this._isAddMode$.next(isAddMode);
+  }
+
+  public setIsAddModeBuilding(isAddModeBuilding: boolean): void {
+    this._isAddModeBuilding$.next(isAddModeBuilding);
   }
 
   get selectedSquare(): Observable<Square> {

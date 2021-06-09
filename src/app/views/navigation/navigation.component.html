@@ -18,7 +18,7 @@
         {{ move.white }}
     </div>
     <div class="col" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'B',
-    'move': move.black !== '/'}" (click)="go(move.moveNumber, 'B', move.blackPosition)">
+    'move': move.black !== ''}" (click)="go(move.moveNumber, 'B', move.blackPosition)">
         {{ move.black }}
     </div>
 </div>

@@ -13,6 +13,8 @@ export class PositionsService {
   private _srcInit: any;
   private _src: any;
   private _positions: Array<POSITION>;
+  // private _color: string;
+  // private _moveNumber: number;
 
   constructor() {
     this._srcInit = {
@@ -99,6 +101,8 @@ export class PositionsService {
     };
     this.resetSrc();
     this._positions = [];
+    // this._color = 'B';
+    // this._moveNumber = 0;
   }
 
   get src(): any {
@@ -112,6 +116,22 @@ export class PositionsService {
   get positions(): Array<POSITION> {
     return this._positions;
   }
+
+  // get color(): string {
+  //   return this._color;
+  // }
+
+  // set color(color: string) {
+  //   this._color = color;
+  // }
+
+  // get moveNumber(): number {
+  //   return this._moveNumber;
+  // }
+
+  // set moveNumber(moveNumber: number) {
+  //   this._moveNumber = moveNumber;
+  // }
 
   public addPosition(position: POSITION): void {
     this._positions.push(position);

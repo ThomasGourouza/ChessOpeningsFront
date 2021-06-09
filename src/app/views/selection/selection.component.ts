@@ -80,11 +80,13 @@ export class SelectionComponent implements OnInit {
   public select(): void {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(false);
+    this.squareService.setIsAddModeBuilding(false);
   }
 
   public add(): void {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(true);
+    this.squareService.setIsAddModeBuilding(false);
   }
 
   public onSubmit(): void {
@@ -97,10 +99,11 @@ export class SelectionComponent implements OnInit {
         this.openingService.setOpening(opening);
 
         const positions = this.positionsService.positions;
-        this.positionsService.src = positions[positions.length - 1].src;
-        // indiquer à navigation le bon moveNumber et color
+        const position = positions[positions.length - 1];
+        this.positionsService.src = position.src;
       }
     }
+    this.squareService.setIsAddModeBuilding(true);
   }
 
 }
