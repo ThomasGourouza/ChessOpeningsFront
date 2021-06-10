@@ -37,7 +37,6 @@ export class BoardComponent implements OnInit {
       line: line
     };
     this.squareService.setSquare(this.selectedSquare);
-    console.log(this.selectedSquare);
   }
 
   public getSource(column: string, line: string): string {

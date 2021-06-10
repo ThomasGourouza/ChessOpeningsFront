@@ -20,6 +20,7 @@ export class SelectionComponent implements OnInit {
   public openings!: Array<Opening>;
   public openingFamilies: Array<OpeningFamily>;
   public isAddMode: boolean;
+  public displayAdd: boolean;
 
   public newOpeningForm!: FormGroup;
 
@@ -31,6 +32,7 @@ export class SelectionComponent implements OnInit {
   ) {
     this.openingFamilies = [];
     this.isAddMode = false;
+    this.displayAdd = false;
   }
 
   public ngOnInit(): void {
@@ -51,8 +53,19 @@ export class SelectionComponent implements OnInit {
             childOpenings: this.setChildOpenings(opening.id, openingList)
           }
         });
-      console.log(this.openingFamilies);
     });
+    this.onChanges();
+  }
+
+  private onChanges(): void {
+    const parentOpeningIdField = this.newOpeningForm.get('parentOpeningId');
+    if (parentOpeningIdField != null) {
+      parentOpeningIdField.valueChanges.subscribe(() => {
+        this.displayAdd = false;
+        this.positionsService.resetSrc();
+        this.openingService.clearOpening();
+      });
+    }
   }
 
   private initForm(): void {
@@ -92,6 +105,7 @@ export class SelectionComponent implements OnInit {
   public onSubmit(): void {
     const parentId = +this.newOpeningForm.value['parentOpeningId'];
     if (parentId === 0) {
+      this.positionsService.resetSrc();
       this.openingService.clearOpening();
     } else {
       const opening = this.openings.find((o) => o.id === parentId);
@@ -103,6 +117,7 @@ export class SelectionComponent implements OnInit {
         this.positionsService.src = position.src;
       }
     }
+    this.displayAdd = true;
     this.squareService.setIsAddModeBuilding(true);
   }
 

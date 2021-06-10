@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Opening } from 'src/app/models/opening.model';
 import { OpeningService } from 'src/app/services/opening.service';
-import { PositionsService } from 'src/app/services/positions.service';
 import { OpeningFamily } from '../selection/selection.component';
 
 @Component({
@@ -16,8 +15,7 @@ export class ListComponent implements OnInit {
   public selectedOpeningId!: number;
 
   constructor(
-    private openingService: OpeningService,
-    private positionsService: PositionsService
+    private openingService: OpeningService
   ) { }
 
   public ngOnInit(): void {

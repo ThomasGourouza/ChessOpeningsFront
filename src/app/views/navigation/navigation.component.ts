@@ -64,7 +64,6 @@ export class NavigationComponent implements OnInit {
     });
     this.squareService.isAddModeBuilding.subscribe((isAddModeBuilding) => {
       if (isAddModeBuilding && this.histo.length > 0) {
-        console.log(this.histo);
         this.moveNumber = this.histo[this.histo.length - 1].moveNumber;
         this.color = (this.histo[this.histo.length - 1].black === '') ? 'W' : 'B';
       }
@@ -136,7 +135,7 @@ export class NavigationComponent implements OnInit {
   }
 
   private buildPositions(opening: Opening): void {
-    this.positionsService.resetPosition();
+    this.positionsService.resetPositions();
     this.positionsService.resetSrc();
     let src = this.positionsService.copySrc(this.positionsService.src);
     this.addNewPosition(this.moveNumber, this.color, src);
