@@ -37,33 +37,65 @@ export class SelectionComponent implements OnInit {
 
   public ngOnInit(): void {
     this.initForm();
+    this.openingService.fetchOpenings();
+    this.updateMappedOpeningList();
     this.squareService.isAddMode.subscribe((isAddMode) => {
       this.isAddMode = isAddMode;
     });
-    this.openingService.opening$.subscribe((opening) =>
-      this.selectedOpeningId = opening.id
+    this.openingService.opening$.subscribe((opening) => {
+      if (opening.id != undefined) {
+        this.selectedOpeningId = opening.id;
+      }
+    }
     );
+    this.onChanges();
+  }
+
+  private updateMappedOpeningList(): void {
+    this.openingService.openingList$.subscribe((openings) => {
+      const mappedOpenings = openings.map((opening) => {
+        return this.mapOpening(opening, openings);
+      });
+      this.openingService.setMappedOpenings(mappedOpenings);
+    });
     this.openingService.mappedOpeningList$.subscribe((openingList) => {
       this.openings = openingList;
       this.openingFamilies = openingList
         .filter((opening) => !opening.parentOpeningId)
         .map((opening) => {
+          let id = 0;
+          if (opening.id != undefined) {
+            id = opening.id;
+          }
           return {
             opening: opening,
-            childOpenings: this.setChildOpenings(opening.id, openingList)
+            childOpenings: this.setChildOpenings(id, openingList)
           }
         });
     });
-    this.onChanges();
   }
 
   private onChanges(): void {
     const parentOpeningIdField = this.newOpeningForm.get('parentOpeningId');
     if (parentOpeningIdField != null) {
-      parentOpeningIdField.valueChanges.subscribe(() => {
+      parentOpeningIdField.valueChanges.subscribe((id) => {
         this.displayAdd = false;
         this.positionsService.resetSrc();
         this.openingService.clearOpening();
+        setTimeout(() => {
+          if (+id !== 0) {
+            const opening = this.openings.find((o) => o.id === +id);
+            if (!!opening) {
+              this.openingService.setOpening(opening);
+
+              const positions = this.positionsService.positions;
+              const position = positions[positions.length - 1];
+              this.positionsService.src = position.src;
+            }
+          }
+          this.displayAdd = true;
+          this.squareService.setIsAddModeBuilding(true);
+        }, 10);
       });
     }
   }
@@ -76,13 +108,24 @@ export class SelectionComponent implements OnInit {
     );
   }
 
+  public onValidate(validate: boolean): void {
+    if (validate) {
+      this.openingService.fetchOpenings();
+      this.updateMappedOpeningList();
+    }
+  }
+
   private setChildOpenings(id: number, openings: Array<Opening>): Array<OpeningFamily> {
     const childOpenings = openings.filter((opening) => opening.parentOpeningId === id);
     if (childOpenings.length > 0) {
       return childOpenings.map((childOpening) => {
+        let id = 0;
+        if (childOpening.id != undefined) {
+          id = childOpening.id;
+        }
         return {
           opening: childOpening,
-          childOpenings: this.setChildOpenings(childOpening.id, openings)
+          childOpenings: this.setChildOpenings(id, openings)
         }
       });
     } else {
@@ -102,23 +145,22 @@ export class SelectionComponent implements OnInit {
     this.squareService.setIsAddModeBuilding(false);
   }
 
-  public onSubmit(): void {
-    const parentId = +this.newOpeningForm.value['parentOpeningId'];
-    if (parentId === 0) {
-      this.positionsService.resetSrc();
-      this.openingService.clearOpening();
-    } else {
-      const opening = this.openings.find((o) => o.id === parentId);
-      if (!!opening) {
-        this.openingService.setOpening(opening);
-
-        const positions = this.positionsService.positions;
-        const position = positions[positions.length - 1];
-        this.positionsService.src = position.src;
-      }
+  mapOpening(opening: Opening, openings: Array<Opening>): Opening {
+    const mappedOpening = {
+      id: opening.id,
+      name: opening.name,
+      parentOpeningId: opening.parentOpeningId,
+      childOpeningIds: opening.childOpeningIds,
+      moves: opening.moves,
+    };
+    let parentOpeningId: number | null | undefined = opening.parentOpeningId;
+    while (!!parentOpeningId) {
+      const parentOpening = openings.find((o) => o.id === parentOpeningId);
+      parentOpeningId = parentOpening?.parentOpeningId;
+      const parentMoves = (!!parentOpening && !!parentOpening.moves) ? parentOpening.moves : [];
+      mappedOpening.moves = parentMoves.concat(mappedOpening.moves);
     }
-    this.displayAdd = true;
-    this.squareService.setIsAddModeBuilding(true);
+    return mappedOpening;
   }
 
 }

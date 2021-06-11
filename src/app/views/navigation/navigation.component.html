@@ -9,15 +9,16 @@
     </div>
 </div>
 <br>
-<div *ngFor="let move of histo" class="row">
-    <div class="col" [ngClass]="{'currentMoveNumber': move.moveNumber === moveNumber}">
-        {{ move.moveNumber }}
+<div *ngFor="let move of histo" class="row d-flex justify-content-center">
+    <div class="col-2 d-flex justify-content-center" [ngClass]="{'currentMoveNumber': move.moveNumber === moveNumber}">
+        {{ move.moveNumber }}.
     </div>
-    <div class="col move" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'W'}"
+    <div class="col-3 move d-flex justify-content-center" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'W'}"
         (click)="go(move.moveNumber, 'W', move.whitePosition)">
         {{ move.white }}
     </div>
-    <div class="col" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'B',
+    <div class="col-1 d-flex justify-content-center">-</div>
+    <div class="col-3 d-flex justify-content-center" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'B',
     'move': move.black !== ''}" (click)="go(move.moveNumber, 'B', move.blackPosition)">
         {{ move.black }}
     </div>

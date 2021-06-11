@@ -19,28 +19,23 @@
     </li>
 </ul>
 <div *ngIf="isAddMode">
-    <form [formGroup]="newOpeningForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="newOpeningForm">
         <div class="row">
             <div class="col-2">
                 From
             </div>
-            <div class="form-group col">
+            <div class="form-group col-8">
                 <select class="form-control" formControlName="parentOpeningId">
-                    <option value="0">New</option>
+                    <option value="0">Nothing</option>
                     <option *ngFor="let opening of openings" [value]="opening.id">
                         {{ opening.name }}
                     </option>
                 </select>
             </div>
-            <div class="col-2">
-                <button class="btn btn-outline-light" type="submit" [disabled]="newOpeningForm.invalid">
-                    OK
-                </button>
-            </div>
         </div>
     </form>
     <br>
-    <app-add *ngIf="displayAdd" [selectedOpeningId]=selectedOpeningId></app-add>
+    <app-add *ngIf="displayAdd" [selectedOpeningId]=selectedOpeningId (validateEmitter)="onValidate($event)"></app-add>
     <br>
 </div>
 <br>

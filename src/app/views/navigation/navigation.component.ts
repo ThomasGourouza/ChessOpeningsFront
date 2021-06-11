@@ -37,7 +37,7 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.openingService.opening$.subscribe((opening) => {
-      if (this.currentOpeningId !== opening.id) {
+      if (this.currentOpeningId !== opening.id && opening.id != undefined ) {
         this.currentOpeningId = opening.id;
         this.init();
         this.buildPositions(opening);

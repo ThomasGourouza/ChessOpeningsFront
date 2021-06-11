@@ -31,7 +31,7 @@ export class OpeningService {
   }
 
   public clearOpening() {
-    this._opening$.next(new Opening(0, '', 0, [], []));
+    this._opening$.next(new Opening('', 0, [], [], 0));
   }
 
   public clearOpeningList() {

@@ -19,9 +19,11 @@ export class ListComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.openingService.opening$.subscribe((opening) =>
-      this.selectedOpeningId = opening.id
-    );
+    this.openingService.opening$.subscribe((opening) => {
+      if (opening.id != undefined) {
+        this.selectedOpeningId = opening.id;
+      }
+    });
   }
 
   public select(opening: Opening): void {

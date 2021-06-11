@@ -1,26 +1,29 @@
 <div class="mx-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-6">
-            <div class="d-flex justify-content-center">
-                <h1 *ngIf="!!opening && opening.id != 0; else default_tiltle">{{ opening.name }}</h1>
-                <ng-template #default_tiltle>
-                    <h1>Chess Openings</h1>
-                </ng-template>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <app-selection></app-selection>
-        </div>
-        <div class="col-6 d-flex justify-content-center">
-            <app-board></app-board>
-        </div>
-        <div class="col-3">
-            <app-navigation></app-navigation>
-        </div>
-    </div>
-
     <br>
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+            <div class="row d-flex justify-content-center">
+                <div class="col-6">
+                    <div class="d-flex justify-content-center">
+                        <h1 *ngIf="!!opening && opening.id != 0; else default_tiltle">{{ opening.name }}</h1>
+                        <ng-template #default_tiltle>
+                            <h1>Chess Openings</h1>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <app-selection></app-selection>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <app-board></app-board>
+                </div>
+                <div class="col-3">
+                    <app-navigation></app-navigation>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
 </div>
