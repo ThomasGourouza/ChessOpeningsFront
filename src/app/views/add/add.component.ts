@@ -32,6 +32,7 @@ export class AddComponent implements OnInit, OnDestroy {
   private moveNumber: number;
   public moves: Array<Move>;
   private subscription!: Subscription;
+  public isSaved!: boolean;
 
   constructor(
     private positionService: PositionsService,
@@ -88,6 +89,7 @@ export class AddComponent implements OnInit, OnDestroy {
         this.moves.push(move);
       }
     });
+    this.openingService.isSaved$.subscribe((isSaved) => this.isSaved = isSaved);
   }
 
   public ngOnDestroy(): void {

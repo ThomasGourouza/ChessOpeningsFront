@@ -13,6 +13,7 @@ export class OpeningService {
   private _opening$ = new Subject<Opening>();
   private _openingList$ = new Subject<Array<Opening>>();
   private _mappedOpeningList$ = new Subject<Array<Opening>>();
+  private _isSaved$ = new Subject<boolean>();
 
   constructor(
     private openingApi: OpeningApi
@@ -28,6 +29,14 @@ export class OpeningService {
 
   public get mappedOpeningList$() {
     return this._mappedOpeningList$.asObservable();
+  }
+
+  public get isSaved$() {
+    return this._isSaved$.asObservable();
+  }
+
+  public setIsSaved(isSaved: boolean): void {
+    this._isSaved$.next(isSaved);
   }
 
   public clearOpening() {
@@ -74,9 +83,11 @@ export class OpeningService {
       .toPromise()
       .then(() => {
         console.log("201");
+        this.setIsSaved(true);
       })
       .catch((error: HttpErrorResponse) => {
         console.log(error);
+        this.setIsSaved(false);
       });
   }
 

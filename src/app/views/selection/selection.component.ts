@@ -98,6 +98,7 @@ export class SelectionComponent implements OnInit {
         }, 10);
       });
     }
+    this.openingService.setIsSaved(false);
   }
 
   private initForm(): void {
@@ -137,12 +138,14 @@ export class SelectionComponent implements OnInit {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(false);
     this.squareService.setIsAddModeBuilding(false);
+    this.openingService.setIsSaved(false);
   }
 
   public add(): void {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(true);
     this.squareService.setIsAddModeBuilding(false);
+    this.openingService.setIsSaved(false);
   }
 
   mapOpening(opening: Opening, openings: Array<Opening>): Opening {

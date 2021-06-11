@@ -19,6 +19,7 @@ export class CenterComponent implements OnInit {
     this.openingService.opening$.subscribe((opening) => {
       this.opening = opening;
     });
+    this.openingService.setIsSaved(false);
 
     // this.openingService.fetchOpenings();
     // this.openingService.openingList$.subscribe((openings) => {
