@@ -30,7 +30,7 @@ export class AddComponent implements OnInit, OnDestroy {
   private columnFirstClick!: string;
   private lineFirstClick!: string;
   private moveNumber: number;
-  private moves: Array<Move>;
+  public moves: Array<Move>;
   private subscription!: Subscription;
 
   constructor(
