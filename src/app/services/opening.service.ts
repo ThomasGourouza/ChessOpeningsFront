@@ -82,11 +82,9 @@ export class OpeningService {
     this.openingApi.createOpening(newOpening)
       .toPromise()
       .then(() => {
-        console.log("201");
         this.setIsSaved(true);
       })
       .catch((error: HttpErrorResponse) => {
-        console.log(error);
         this.setIsSaved(false);
       });
   }
@@ -96,7 +94,7 @@ export class OpeningService {
       .toPromise()
       .then(() => {
         this.fetchOpenings();
-        console.log("ok");
+        console.log("204");
       })
       .catch((error: HttpErrorResponse) => {
         console.log(error);

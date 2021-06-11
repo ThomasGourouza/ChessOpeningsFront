@@ -37,8 +37,20 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit(): void {
     this.openingService.opening$.subscribe((opening) => {
-      if (this.currentOpeningId !== opening.id && opening.id != undefined ) {
+      if (this.currentOpeningId !== opening.id && opening.id != undefined) {
         this.currentOpeningId = opening.id;
+        if (!this.squareService.isAddMode) {
+          this.openingService.clearOpeningList();
+          this.openingService.fetchOpenings();
+          this.openingService.openingList$.subscribe((openings) => {
+            const currentOpeningFirstMove = openings.find((o) => o.id === this.currentOpeningId)?.moves[0];
+            if (currentOpeningFirstMove?.moveNumber && currentOpeningFirstMove?.color) {
+              this.moveNumber = currentOpeningFirstMove?.moveNumber;
+              this.color = currentOpeningFirstMove?.color;
+              this.setPosition();
+            }
+          });
+        }
         this.init();
         this.buildPositions(opening);
         this.positionsService.positions.forEach((position) => {
@@ -103,7 +115,6 @@ export class NavigationComponent implements OnInit {
       position.color === color
       && position.moveNumber === moveNumber
     );
-
     if (moveExists) {
       if (this.color === 'B') {
         this.color = 'W';

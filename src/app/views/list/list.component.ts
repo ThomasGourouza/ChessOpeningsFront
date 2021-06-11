@@ -12,6 +12,7 @@ export class ListComponent implements OnInit {
 
   @Input()
   public openingFamily!: OpeningFamily;
+
   public selectedOpeningId!: number;
 
   constructor(

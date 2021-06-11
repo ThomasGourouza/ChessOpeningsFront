@@ -39,9 +39,6 @@ export class SelectionComponent implements OnInit {
     this.initForm();
     this.openingService.fetchOpenings();
     this.updateMappedOpeningList();
-    this.squareService.isAddMode.subscribe((isAddMode) => {
-      this.isAddMode = isAddMode;
-    });
     this.openingService.opening$.subscribe((opening) => {
       if (opening.id != undefined) {
         this.selectedOpeningId = opening.id;
@@ -111,8 +108,10 @@ export class SelectionComponent implements OnInit {
 
   public onValidate(validate: boolean): void {
     if (validate) {
-      this.openingService.fetchOpenings();
-      this.updateMappedOpeningList();
+      setTimeout(() => {
+        this.openingService.fetchOpenings();
+        this.updateMappedOpeningList();
+      }, 100);
     }
   }
 
@@ -137,6 +136,7 @@ export class SelectionComponent implements OnInit {
   public select(): void {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(false);
+    this.isAddMode = this.squareService.isAddMode;
     this.squareService.setIsAddModeBuilding(false);
     this.openingService.setIsSaved(false);
   }
@@ -144,6 +144,7 @@ export class SelectionComponent implements OnInit {
   public add(): void {
     this.openingService.clearOpening();
     this.squareService.setIsAddMode(true);
+    this.isAddMode = this.squareService.isAddMode;
     this.squareService.setIsAddModeBuilding(false);
     this.openingService.setIsSaved(false);
   }
