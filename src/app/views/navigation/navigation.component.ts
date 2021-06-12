@@ -193,6 +193,7 @@ export class NavigationComponent implements OnInit {
     this.currentOpeningId = 0;
     this.histo = [];
     this.openingService.clearOpening();
+    this.positionsService.resetSrc();
   }
 
   public cancelDelete(): void {

@@ -57,7 +57,8 @@ export class BoardComponent implements OnInit {
   public isCurrent(column: string, line: string): boolean {
     return !this.squareService.isAddMode
       && column === this.currentColumn
-      && line === this.currentLine;
+      && line === this.currentLine
+      && this.moves.length > 0;
   }
 
   public onClick(column: string, line: string): void {
