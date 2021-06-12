@@ -13,7 +13,8 @@
     <div class="col-2 d-flex justify-content-center" [ngClass]="{'currentMoveNumber': move.moveNumber === moveNumber}">
         {{ move.moveNumber }}.
     </div>
-    <div class="col-3 move d-flex justify-content-center" [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'W'}"
+    <div class="col-3 move d-flex justify-content-center"
+        [ngClass]="{'currentPosition': move.moveNumber === moveNumber && color === 'W'}"
         (click)="go(move.moveNumber, 'W', move.whitePosition)">
         {{ move.white }}
     </div>
@@ -22,4 +23,21 @@
     'move': move.black !== ''}" (click)="go(move.moveNumber, 'B', move.blackPosition)">
         {{ move.black }}
     </div>
+</div>
+<br>
+<br>
+<div *ngIf="currentOpeningId !== 0 && isNotAddMode()" class="d-flex justify-content-center">
+    <div *ngIf="!confirmDelete; else confirm" class="d-flex justify-content-center">
+        <button class="btn btn-outline-danger" (click)="confirmDeletion()">Delete</button>
+    </div>
+    <ng-template #confirm>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <button class="btn btn-outline-light" (click)="cancelDelete()">Cancel</button>
+            </div>
+            <div class="col d-flex justify-content-center">
+                <button class="btn btn-outline-danger" (click)="delete()">Confirm</button>
+            </div>
+        </div>
+    </ng-template>
 </div>

@@ -1,13 +1,25 @@
 <br>
 <br>
 <div class="row">
-    <div class="col">
-        <button class="btn btn-light" (click)="select()">
-            Openings
-        </button>
+    <div class="col d-flex justify-content-center">
+        <div *ngIf="isAddMode; else checkModeOpening">
+            <button class="btn btn-outline-light" (click)="select()">
+                Openings
+            </button>
+        </div>
+        <ng-template #checkModeOpening>
+            <button class="btn btn-light" (click)="select()">
+                Openings
+            </button>
+        </ng-template>
     </div>
-    <div class="col">
-        <button type="button" class="btn btn-light" (click)="add()">Add</button>
+    <div class="col d-flex justify-content-center">
+        <div *ngIf="isAddMode; else checkModeAdd">
+            <button class="btn btn-light" (click)="add()">Add</button>
+        </div>
+        <ng-template #checkModeAdd>
+            <button class="btn btn-outline-light" (click)="add()">Add</button>
+        </ng-template>
     </div>
 </div>
 <br>

@@ -21,12 +21,10 @@ export class NavigationComponent implements OnInit {
 
   public moveNumber!: number;
   public color!: string;
-
   public histo!: Array<MOVE>;
-
   public currentOpeningId!: number;
-
   private unTouchedOpeningList!: Array<Opening>;
+  public confirmDelete: boolean;
 
   constructor(
     private positionsService: PositionsService,
@@ -35,6 +33,7 @@ export class NavigationComponent implements OnInit {
   ) {
     this.currentOpeningId = 0;
     this.init();
+    this.confirmDelete = false;
   }
 
   ngOnInit(): void {
@@ -178,6 +177,26 @@ export class NavigationComponent implements OnInit {
       src: this.positionsService.copySrc(src)
     };
     this.positionsService.addPosition(newPosition);
+  }
+
+  public isNotAddMode(): boolean {
+    return !this.squareService.isAddMode;
+  }
+
+  public confirmDeletion(): void {
+    this.confirmDelete = true;
+  }
+
+  public delete(): void {
+    this.openingService.deleteOpeningById(this.currentOpeningId);
+    this.confirmDelete = false;
+    this.currentOpeningId = 0;
+    this.histo = [];
+    this.openingService.clearOpening();
+  }
+
+  public cancelDelete(): void {
+    this.confirmDelete = false;
   }
 
 }
