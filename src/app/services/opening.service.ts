@@ -100,7 +100,6 @@ export class OpeningService {
       .toPromise()
       .then(() => {
         this.fetchOpenings();
-        console.log("204");
       })
       .catch((error: HttpErrorResponse) => {
         console.log(error);

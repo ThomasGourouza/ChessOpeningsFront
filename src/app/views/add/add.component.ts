@@ -112,7 +112,9 @@ export class AddComponent implements OnInit, OnDestroy {
       moves: this.moves
     }
     this.openingService.addOpening(opening);
-    this.openingService.fetchOpenings();
+    setTimeout(() => {
+      this.openingService.fetchOpenings();      
+    }, 100);
     this.validateEmitter.emit(true);
   }
 
