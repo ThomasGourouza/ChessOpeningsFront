@@ -26,6 +26,8 @@ export class NavigationComponent implements OnInit {
 
   public currentOpeningId!: number;
 
+  private unTouchedOpeningList!: Array<Opening>;
+
   constructor(
     private positionsService: PositionsService,
     private openingService: OpeningService,
@@ -36,21 +38,12 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.openingService.unTouchedOpeningList$.subscribe((openings) => {
+      this.unTouchedOpeningList = openings;
+    });
     this.openingService.opening$.subscribe((opening) => {
       if (this.currentOpeningId !== opening.id && opening.id != undefined) {
         this.currentOpeningId = opening.id;
-        if (!this.squareService.isAddMode) {
-          this.openingService.clearOpeningList();
-          this.openingService.fetchOpenings();
-          this.openingService.openingList$.subscribe((openings) => {
-            const currentOpeningFirstMove = openings.find((o) => o.id === this.currentOpeningId)?.moves[0];
-            if (currentOpeningFirstMove?.moveNumber && currentOpeningFirstMove?.color) {
-              this.moveNumber = currentOpeningFirstMove?.moveNumber;
-              this.color = currentOpeningFirstMove?.color;
-              this.setPosition();
-            }
-          });
-        }
         this.init();
         this.buildPositions(opening);
         this.positionsService.positions.forEach((position) => {
@@ -72,6 +65,15 @@ export class NavigationComponent implements OnInit {
             }
           }
         });
+        if (!this.squareService.isAddMode) {
+          const currentOpeningFirstMove = this.unTouchedOpeningList.find((o) => o.id === this.currentOpeningId)?.moves[0];
+          if (currentOpeningFirstMove?.moveNumber && currentOpeningFirstMove?.color) {
+            this.moveNumber = currentOpeningFirstMove?.moveNumber;
+            this.color = currentOpeningFirstMove?.color;
+            this.setPosition();
+            this.positionsService.setMoveNumberAndColor(this.moveNumber, this.color);
+          }
+        }
       }
     });
     this.squareService.isAddModeBuilding.subscribe((isAddModeBuilding) => {
@@ -98,6 +100,7 @@ export class NavigationComponent implements OnInit {
       this.moveNumber = moveNumber;
       this.color = color;
       this.positionsService.src = src;
+      this.positionsService.setMoveNumberAndColor(this.moveNumber, this.color);
     }
   }
 
@@ -124,6 +127,7 @@ export class NavigationComponent implements OnInit {
       }
       this.setPosition();
     }
+    this.positionsService.setMoveNumberAndColor(this.moveNumber, this.color);
   }
 
   public previous(): void {
@@ -136,6 +140,7 @@ export class NavigationComponent implements OnInit {
       }
       this.setPosition();
     }
+    this.positionsService.setMoveNumberAndColor(this.moveNumber, this.color);
   }
 
   private setPosition(): void {

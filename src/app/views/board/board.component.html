@@ -6,7 +6,7 @@
                 {{ line }}&nbsp;
             </div>
         </td>
-        <td class="customBorder" *ngFor="let column of columns; let l = index">
+        <td class="customBorder" *ngFor="let column of columns; let l = index" [ngClass]="{'current': isCurrent(column, line)}">
             <div class="content" [ngClass]="{
                 'black': (n+l)%2 === 1, 
                 'white': (n+l)%2 === 0

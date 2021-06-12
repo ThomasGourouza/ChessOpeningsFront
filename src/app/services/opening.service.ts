@@ -12,6 +12,7 @@ export class OpeningService {
 
   private _opening$ = new Subject<Opening>();
   private _openingList$ = new Subject<Array<Opening>>();
+  private _unTouchedOpeningList$ = new Subject<Array<Opening>>();
   private _mappedOpeningList$ = new Subject<Array<Opening>>();
   private _isSaved$ = new Subject<boolean>();
 
@@ -25,6 +26,10 @@ export class OpeningService {
 
   public get openingList$() {
     return this._openingList$.asObservable();
+  }
+
+  public get unTouchedOpeningList$() {
+    return this._unTouchedOpeningList$.asObservable();
   }
 
   public get mappedOpeningList$() {
@@ -53,6 +58,7 @@ export class OpeningService {
     openingsObservable.toPromise()
       .then((openings: Array<Opening>) => {
         this._openingList$.next(openings);
+        this._unTouchedOpeningList$.next(openings);
       })
       .catch((error: HttpErrorResponse) => {
         console.log(error);

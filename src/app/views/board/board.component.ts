@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Opening } from 'src/app/models/opening.model';
+import { Move } from 'src/app/models/move.model';
+import { OpeningService } from 'src/app/services/opening.service';
 import { PositionsService } from 'src/app/services/positions.service';
 import { Square, SquareService } from 'src/app/services/square.service';
 export interface POSITION {
@@ -21,15 +22,43 @@ export class BoardComponent implements OnInit {
 
   public selectedSquare!: Square;
 
+  private currentColumn!: string | undefined;
+  private currentLine!: string | undefined;
+  private mvNumber!: number;
+  private color!: string;
+  private moves!: Array<Move>;
+
   constructor(
     private squareService: SquareService,
-    private positionsService: PositionsService
+    private positionsService: PositionsService,
+    private openingService: OpeningService,
   ) {
     this.columns = this.squareService.columns;
     this.lines = this.squareService.lines;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.openingService.opening$.subscribe((opening) => {
+      this.moves = opening.moves;
+    });
+
+    this.positionsService.getMoveNumberAndColor().subscribe((mvcol) => {
+      this.mvNumber = mvcol.moveNumber;
+      this.color = mvcol.color;
+      const mv = this.moves.find((move) =>
+        move.moveNumber === this.mvNumber && move.color === this.color
+      );
+      this.currentColumn = mv?.columnTo;
+      this.currentLine = mv?.lineTo;
+    });
+
+  }
+
+  public isCurrent(column: string, line: string): boolean {
+    return !this.squareService.isAddMode
+      && column === this.currentColumn
+      && line === this.currentLine;
+  }
 
   public onClick(column: string, line: string): void {
     this.selectedSquare = {

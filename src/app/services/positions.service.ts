@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 export interface POSITION {
   moveNumber: number;
   color: string;
   src: any;
+}
+export interface MVCOL {
+  moveNumber: number;
+  color: string;
 }
 
 @Injectable({
@@ -13,6 +18,7 @@ export class PositionsService {
   private _srcInit: any;
   private _src: any;
   private _positions: Array<POSITION>;
+  private _moveNumberAndColor$ = new Subject<MVCOL>();
 
   constructor() {
     this._srcInit = {
@@ -111,6 +117,18 @@ export class PositionsService {
 
   get positions(): Array<POSITION> {
     return this._positions;
+  }
+
+  public getMoveNumberAndColor(): Observable<MVCOL> {
+    return this._moveNumberAndColor$.asObservable();
+  }
+
+  public setMoveNumberAndColor(moveNumber: number, color: string) {
+    const mvcol: MVCOL = {
+      color: color,
+      moveNumber: moveNumber
+    }
+    this._moveNumberAndColor$.next(mvcol);
   }
 
   public addPosition(position: POSITION): void {

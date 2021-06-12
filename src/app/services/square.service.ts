@@ -13,8 +13,6 @@ export class SquareService {
 
   private _columns: Array<string>;
   private _lines: Array<string>;
-
-  // private _isAddMode$ = new Subject<boolean>();
   private _isAddMode: boolean;
   private _isAddModeBuilding$ = new Subject<boolean>();
   private _selectedSquare$ = new Subject<Square>();
@@ -33,10 +31,6 @@ export class SquareService {
     return this._lines;
   }
 
-  // get isAddMode(): Observable<boolean> {
-  //   return this._isAddMode$.asObservable();
-  // }
-
   get isAddMode(): boolean {
     return this._isAddMode;
   }
@@ -44,10 +38,6 @@ export class SquareService {
   get isAddModeBuilding(): Observable<boolean> {
     return this._isAddModeBuilding$.asObservable();
   }
-
-  // public setIsAddMode(isAddMode: boolean): void {
-  //   this._isAddMode$.next(isAddMode);
-  // }
 
   public setIsAddMode(isAddMode: boolean): void {
     this._isAddMode = isAddMode;

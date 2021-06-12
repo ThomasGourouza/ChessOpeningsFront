@@ -139,6 +139,8 @@ export class SelectionComponent implements OnInit {
     this.isAddMode = this.squareService.isAddMode;
     this.squareService.setIsAddModeBuilding(false);
     this.openingService.setIsSaved(false);
+    this.positionsService.setMoveNumberAndColor(0, '');
+    this.newOpeningForm.controls['parentOpeningId'].setValue(null);
   }
 
   public add(): void {
@@ -147,6 +149,8 @@ export class SelectionComponent implements OnInit {
     this.isAddMode = this.squareService.isAddMode;
     this.squareService.setIsAddModeBuilding(false);
     this.openingService.setIsSaved(false);
+    this.positionsService.setMoveNumberAndColor(0, '');
+    this.displayAdd = false;
   }
 
   mapOpening(opening: Opening, openings: Array<Opening>): Opening {

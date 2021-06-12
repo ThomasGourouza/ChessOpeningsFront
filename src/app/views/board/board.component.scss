@@ -17,3 +17,7 @@ td.customBorder {
 .white_pawn {
     background-image: url("../../../assets/figures/WhitePawn.png");
 }
+td.current {
+    border: 1px thick chartreuse;
+    background-color: chartreuse;
+}
