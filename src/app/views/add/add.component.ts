@@ -113,8 +113,11 @@ export class AddComponent implements OnInit, OnDestroy {
     }
     this.openingService.addOpening(opening);
     setTimeout(() => {
-      this.openingService.fetchOpenings();      
-    }, 100);
+      this.openingService.fetchOpenings();
+      this.addForm.controls['name'].setValue(null);
+      this.moves = [];
+      this.openingService.setIsSaved(false);
+    }, 500);
     this.validateEmitter.emit(true);
   }
 
