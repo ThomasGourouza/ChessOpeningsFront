@@ -90,6 +90,14 @@ export class NavigationComponent implements OnInit {
   }
 
   private buildHistoMove(openingMove: Move | undefined): string {
+    if (openingMove?.columnFrom === 'e' && ['1', '8'].includes(openingMove?.lineFrom)
+      && ['c', 'g'].includes(openingMove?.columnTo) && openingMove?.lineTo === openingMove?.lineFrom) {
+      if (openingMove?.columnTo === 'g') {
+        return 'O-O';
+      } else {
+        return 'O-O-O';
+      }
+    }
     const piece = (openingMove?.piece !== 'P') ? openingMove?.piece : '';
     return (!!openingMove) ? (piece + openingMove?.columnTo + openingMove?.lineTo) : 'X';
   }
@@ -166,6 +174,20 @@ export class NavigationComponent implements OnInit {
       const srcFrom = src[from.columnFrom][from.lineFrom];
       src[from.columnFrom][from.lineFrom] = '';
       src[to.columnTo][to.lineTo] = srcFrom;
+      // if castle
+      if (from.columnFrom === 'e' && ['1', '8'].includes(from.lineFrom)
+        && ['c', 'g'].includes(to.columnTo) && to.lineTo === from.lineFrom) {
+        // moving the rook
+        if (to.columnTo === 'g') {
+          const rookSrc = src['h'][to.lineTo];
+          src['h'][from.lineFrom] = '';
+          src['f'][to.lineTo] = rookSrc;
+        } else {
+          const rookSrc = src['a'][to.lineTo];
+          src['a'][from.lineFrom] = '';
+          src['d'][to.lineTo] = rookSrc;
+        }
+      }
       this.addNewPosition(move.moveNumber, move.color, src);
     });
   }

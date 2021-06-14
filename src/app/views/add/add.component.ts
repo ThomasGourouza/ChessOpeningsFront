@@ -66,6 +66,20 @@ export class AddComponent implements OnInit, OnDestroy {
         this.secondClick = false;
         this.positionService.src[this.columnFirstClick][this.lineFirstClick] = '';
         this.positionService.src[column][line] = this.src;
+        // if castle
+        if (this.columnFirstClick === 'e' && ['1', '8'].includes(this.lineFirstClick)
+          && ['c', 'g'].includes(column) && line === this.lineFirstClick) {
+          // moving the rook
+          if (column === 'g') {
+            const rookSrc = this.positionService.src['h'][line];
+            this.positionService.src['h'][this.lineFirstClick] = '';
+            this.positionService.src['f'][line] = rookSrc;
+          } else {
+            const rookSrc = this.positionService.src['a'][line];
+            this.positionService.src['a'][this.lineFirstClick] = '';
+            this.positionService.src['d'][line] = rookSrc;
+          }
+        }
         const colorPiece = this.src.split('../../../assets/figures/')[1].split('.png')[0];
         const arrayPiece = colorPiece.split('');
         for (let i = 0; i < 5; i++) {
@@ -117,8 +131,8 @@ export class AddComponent implements OnInit, OnDestroy {
       this.addForm.controls['name'].setValue(null);
       this.moves = [];
       this.openingService.setIsSaved(false);
+      this.validateEmitter.emit(true);
     }, 500);
-    this.validateEmitter.emit(true);
   }
 
   public mapMovesToDisplay(moves: Array<Move>): Array<MoveToDisplay> {

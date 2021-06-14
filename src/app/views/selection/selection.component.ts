@@ -111,6 +111,8 @@ export class SelectionComponent implements OnInit {
       setTimeout(() => {
         this.openingService.fetchOpenings();
         this.updateMappedOpeningList();
+        this.newOpeningForm.controls['parentOpeningId']
+          .setValue(this.openings[this.openings.length - 1].id);
       }, 100);
     }
   }
