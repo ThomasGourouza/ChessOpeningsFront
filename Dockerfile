@@ -7,4 +7,4 @@ RUN npm run build --prod
 
 # run
 FROM nginx:alpine
-COPY --from=node /app/dist/chessopenings /usr/share/nginx/html
+COPY --from=node /app/dist/ChessOpeningsFront /usr/share/nginx/html
